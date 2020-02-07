@@ -8,7 +8,12 @@ then
   exit 1
 else if [[ "${UID}" -eq 0 ]]
 then
+  
   USER_NAME=${1}
+  
+  shift
+  
+  COMMENT="${@}"
   PASSWORD=$(date +%s%N${RANDOM}${RANDOM} | sha256sum | head -c48)
   useradd -c "${COMMENT}" -m ${USER_NAME} &> /dev/null
   if [[ "${?}" -ne 0 ]]
