@@ -10,19 +10,19 @@ else if [[ "${UID}" -eq 0 ]]
 then
   USER_NAME=${1}
   PASSWORD=$(date +%s%N${RANDOM}${RANDOM} | sha256sum | head -c48)
-  useradd -c "${COMMENT}" -m ${USER_NAME}
+  useradd -c "${COMMENT}" -m ${USER_NAME} &> /dev/null
   if [[ "${?}" -ne 0 ]]
   then
     echo 'The useradd command did not execute successfully.'
     exit 1
   fi
-  echo ${PASSWORD} | passwd --stdin ${USER_NAME}
+  echo ${PASSWORD} | passwd --stdin ${USER_NAME} &> /dev/null
   if [[ "${?}" -ne 0 ]]
   then
-    echo 'The password command did not execute successfully.'
+    echo 'The password command did not execute successfully.' &> /dev/null
     exit 1
   fi
-  passwd -e ${USER_NAME}
+  passwd -e ${USER_NAME} &> /dev/null
   echo -e "\nusername:"
   echo  "${USER_NAME}"
 
